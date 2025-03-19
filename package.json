@@ -1,0 +1,35 @@
+{
+  "name": "promptlock",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@fastify/cors": "^11.0.0",
+    "@huggingface/inference": "^3.6.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/pg": "^8.11.11",
+    "@types/redis": "^4.0.11",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "fastify": "^5.2.1",
+    "nodemon": "^3.1.9",
+    "openai": "^4.87.4",
+    "pg": "^8.14.1",
+    "redis": "^4.7.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10"
+  }
+}
