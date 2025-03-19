@@ -1,125 +1,158 @@
 # PromptLock
 
-A powerful service for analyzing and protecting prompts in AI applications. PromptLock helps prevent prompt injection attacks and ensures safe interaction with AI models.
+A powerful prompt security and analysis service that protects your AI applications from malicious prompts and provides detailed analytics.
 
 ## Features
 
-- 🔒 **Prompt Analysis**: Detect and prevent prompt injection attacks
-- 🎯 **Industry-Specific Detection**: Custom detection patterns for different industries
-- 📊 **Analytics Dashboard**: Track and analyze prompt security metrics
-- 🔍 **Pattern Detection**: Built-in detection patterns for common attack vectors
-- 🤖 **Multi-Model Support**: Works with OpenAI, Anthropic, and other AI providers
-
-## Installation
-
-```bash
-npm install promptlock
-```
+- 🔒 Real-time prompt analysis and protection
+- 📊 Comprehensive analytics dashboard
+- 🛡️ Customizable detection patterns
+- 📈 Detailed security reports
+- 🔑 API-first architecture
+- 🎯 Easy integration with any AI application
 
 ## Quick Start
 
+### Installation
+
+```bash
+npm install @promptlock/api
+```
+
+### Usage
+
 ```typescript
-import { PromptLockClient } from 'promptlock';
+import { PromptLockClient } from '@promptlock/api';
 
 // Initialize client
 const client = new PromptLockClient({
-  apiKey: 'your-api-key',
-  baseUrl: 'https://api.promptlock.dev',
-  debug: true
+  apiKey: 'your_api_key',
+  baseUrl: 'https://api.promptlock.dev'
 });
 
 // Analyze a prompt
-const response = await client.analyzePrompt({
-  text: 'Your prompt here',
-  model: 'gpt-4',
-  provider: 'openai',
-  industry: 'technology'
+const result = await client.analyzePrompt({
+  prompt: "What is the capital of France?",
+  context: {
+    application: "chatbot",
+    userId: "user123"
+  }
 });
 
 // Check if prompt is safe
-if (!response.detection.isMalicious) {
-  // Proceed with your AI call
-  console.log('Prompt is safe!');
+if (result.isSafe) {
+  // Process the prompt
 } else {
-  console.log('Warning: Potentially malicious prompt detected');
-  console.log('Details:', response.detection.details);
+  // Handle malicious prompt
+  console.log(result.threats);
 }
 ```
 
-## Detection Patterns
+## Dashboard
 
-PromptLock includes built-in detection patterns for common attack vectors:
+PromptLock includes a modern React dashboard built with Material-UI for managing your prompt security. The dashboard provides a comprehensive interface for monitoring and managing your prompt security:
 
-- System prompt leak attempts
-- Role confusion attacks
-- Data extraction attempts
-- Command injection attempts
-- Context manipulation
+### Features
 
-## API Reference
+- 📊 **Analytics Dashboard**
+  - Real-time metrics and KPIs
+  - Interactive charts showing prompt analysis trends
+  - Attack type distribution visualization
+  - Monthly performance tracking
 
-### `analyzePrompt`
+- 🛡️ **Security Center**
+  - Real-time security incident monitoring
+  - Threat detection patterns management
+  - Security settings configuration
+  - Incident response workflow
 
-Analyzes a prompt for potential injection attacks.
+- ⚙️ **Settings & Configuration**
+  - API key management
+  - User profile settings
+  - Notification preferences
+  - Billing information
 
+### Getting Started
+
+1. Navigate to the `dashboard` directory:
+```bash
+cd dashboard
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Create a `.env` file in the dashboard directory:
+```env
+REACT_APP_API_URL=https://api.promptlock.dev
+REACT_APP_API_KEY=your_api_key
+```
+
+4. Start the development server:
+```bash
+npm start
+```
+
+The dashboard will be available at `http://localhost:3000`
+
+### Dashboard Components
+
+- **Main Dashboard**: Overview of key metrics and recent activity
+- **Security Page**: Monitor and manage security incidents
+- **Analytics Page**: Detailed analytics and reporting
+- **Settings Page**: Manage account and application settings
+
+## API Documentation
+
+### Authentication
+
+All requests require an API key in the `x-api-key` header:
 ```typescript
-interface PromptRequest {
-  text: string;
-  model: string;
-  provider: 'openai' | 'anthropic';
-  industry?: string;
-  options?: {
-    maxTokens?: number;
-    temperature?: number;
-    topP?: number;
-    frequencyPenalty?: number;
-    presencePenalty?: number;
-  };
-}
+const headers = {
+  'x-api-key': 'your_api_key'
+};
+```
 
-interface PromptResponse {
-  text: string;
-  usage: {
-    promptTokens: number;
-    completionTokens: number;
-    totalTokens: number;
-  };
-  detection: {
-    isMalicious: boolean;
-    confidence: number;
-    attackType?: string;
-    details: string[];
-  };
+### Endpoints
+
+#### Analyze Prompt
+```typescript
+POST /api/v1/analyze
+{
+  "prompt": "string",
+  "context": {
+    "application": "string",
+    "userId": "string"
+  }
 }
 ```
 
-### `getPatterns`
-
-Get available detection patterns for a specific industry.
-
+#### Get Analytics
 ```typescript
-const patterns = await client.getPatterns('technology');
+GET /api/v1/analytics
+{
+  "startDate": "2024-02-01",
+  "endDate": "2024-02-14"
+}
 ```
 
-### `getAnalytics`
-
-Get analytics for your account.
-
+#### Manage Detection Patterns
 ```typescript
-const analytics = await client.getAnalytics({
-  industry: 'technology',
-  startDate: '2024-01-01',
-  endDate: '2024-03-20'
-});
+GET /api/v1/patterns
+POST /api/v1/patterns
+PUT /api/v1/patterns/:id
+DELETE /api/v1/patterns/:id
 ```
 
 ## Development
 
 ### Prerequisites
 
-- Node.js (v16 or higher)
-- npm (v8 or higher)
-- TypeScript (v5.0 or higher)
+- Node.js 18+
+- npm or yarn
+- TypeScript 5.3+
 
 ### Setup
 
@@ -136,13 +169,26 @@ npm install
 
 3. Create a `.env` file:
 ```env
-PROMPTLOCK_API_KEY=your-api-key
-PROMPTLOCK_API_URL=http://localhost:3000
+PORT=3000
+JWT_SECRET=your-secret-key
+API_KEY=your-dev-api-key
 ```
 
-4. Run the demo:
+4. Start development server:
 ```bash
-npm run demo
+npm run dev
+```
+
+### Building
+
+```bash
+npm run build
+```
+
+### Testing
+
+```bash
+npm test
 ```
 
 ## Contributing
@@ -155,14 +201,10 @@ npm run demo
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE) for details
 
 ## Support
 
 - Documentation: [docs.promptlock.dev](https://docs.promptlock.dev)
 - Issues: [GitHub Issues](https://github.com/kvdoherty1031/PromptLock/issues)
 - Email: support@promptlock.dev
-
-## Security
-
-If you discover any security-related issues, please email security@promptlock.dev instead of using the issue tracker. 
